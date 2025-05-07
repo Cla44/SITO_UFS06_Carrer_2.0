@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prenotazione Confermata - DriveXperience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles & Reset - (Duplicato) */
+        :root {
+            --primary-color: #0D1B2A;
+            --secondary-color: #1B263B;
+            --accent-color: #00A6FB;
+            --text-color: #E0E1DD;
+            --highlight-color: #FF4E00;
+            --card-bg: #2c3e50;
+            --font-primary: 'Orbitron', sans-serif;
+            --font-secondary: 'Roboto', sans-serif;
+            --accent-color-rgb: 0, 166, 251;
+            --highlight-color-rgb: 255, 78, 0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-secondary); background-color: var(--primary-color); color: var(--text-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 20px 0; }
+        main { flex-grow: 1; }
+        h1, h2, h3 { font-family: var(--font-primary); color: var(--accent-color); margin-bottom: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        h1 { font-size: 2.8em; } h2 { font-size: 2.2em; } h3 { font-size: 1.6em; color: var(--text-color); }
+        p { margin-bottom: 15px; }
+        a { color: var(--accent-color); text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: var(--highlight-color); }
+        header { background-color: var(--secondary-color); padding: 15px 0; border-bottom: 3px solid var(--accent-color); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        header .container { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .logo { font-family: var(--font-primary); font-size: 2em; font-weight: 700; color: var(--text-color); }
+        .logo .highlight { color: var(--highlight-color); }
+        nav ul { list-style: none; display: flex; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { font-weight: 700; padding: 5px 10px; border-radius: 5px; }
+        nav ul li a.active, nav ul li a:hover { background-color: var(--accent-color); color: var(--primary-color); text-shadow: none; }
+        .cta-button { display: inline-block; background-color: var(--accent-color); color: var(--primary-color); padding: 12px 25px; font-family: var(--font-primary); font-weight: 700; text-transform: uppercase; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease, transform 0.2s ease; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .cta-button:hover { background-color: var(--highlight-color); color: #fff; transform: translateY(-2px); }
+
+        /* Confirmation Page Specifics */
+        #confirmation-message {
+            background-color: var(--secondary-color);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .icon-success svg { fill: #2ecc71; margin-bottom: 20px; }
+        #booking-summary { background-color: var(--primary-color); padding: 20px; margin-top: 30px; border-radius: 5px; text-align: left; border: 1px solid var(--accent-color); }
+        #booking-summary h2 { text-align: center; color: var(--accent-color); margin-bottom: 15px; }
+        #booking-summary p { margin-bottom: 10px; font-size: 1.1em; }
+        #booking-summary p strong { color: var(--accent-color); }
+
+        footer { background-color: var(--secondary-color); color: #aaa; text-align: center; padding: 20px 0; border-top: 3px solid var(--accent-color); margin-top: auto; }
+        footer p { margin-bottom: 5px; font-size: 0.9em; }
+
+        @media (max-width: 768px) {
+            header .container { flex-direction: column; align-items: center; }
+            nav ul { margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+            nav ul li { margin: 5px 10px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Drive<span class="highlight">X</span>perience</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#modelli">Modelli</a></li>
+                    <li><a href="booking.html">Prenota</a></li>
+                    <li><a href="index.html#contatti">Contatti</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="confirmation-message">
+            <div class="icon-success">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="80px" height="80px"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 16.17l7.59-7.59L19 10l-9 9z"/></svg>
+            </div>
+            <h1>Prenotazione Confermata!</h1>
+            <p>Grazie per aver prenotato il tuo test drive con DriveXperience.</p>
+            <p>Riceverai a breve un'email di conferma con tutti i dettagli.</p>
+            
+            <div id="booking-summary">
+                <h2>Riepilogo della tua Prenotazione:</h2>
+                <p><strong>Auto:</strong> <span id="summary-car-name">N/D</span></p>
+                <p><strong>Concessionario:</strong> <span id="summary-dealer-name">N/D</span></p>
+                <p><strong>Indirizzo:</strong> <span id="summary-dealer-address">N/D</span></p>
+                <p><strong>Data e Ora:</strong> <span id="summary-datetime">N/D</span></p>
+                <p><strong>Nome:</strong> <span id="summary-user-name">N/D</span></p>
+            </div>
+
+            <a href="index.html" class="cta-button">Torna alla Home</a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 DriveXperience. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const bookingData = JSON.parse(localStorage.getItem('bookingConfirmation'));
+            if (!bookingData) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            document.getElementById('summary-car-name').textContent = bookingData.carName;
+            document.getElementById('summary-dealer-name').textContent = bookingData.dealerName;
+            document.getElementById('summary-dealer-address').textContent = bookingData.dealerAddress || 'N/D';
+            document.getElementById('summary-datetime').textContent = `${new Date(bookingData.date).toLocaleDateString('it-IT')} alle ${bookingData.time}`;
+            document.getElementById('summary-user-name').textContent = bookingData.userName;
+
+            // Opzionale: pulire localStorage dopo la conferma
+            // localStorage.removeItem('selectedCar');
+            // localStorage.removeItem('bookingConfirmation');
+            // localStorage.removeItem('selectedDealerAddress');
+        });
+    </script>
+</body>
+</html>

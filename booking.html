@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prenota Test Drive - DriveXperience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles & Reset - (Duplicato da index.html per completezza, ma in un progetto reale sarebbe in un file CSS separato) */
+        :root {
+            --primary-color: #0D1B2A;
+            --secondary-color: #1B263B;
+            --accent-color: #00A6FB;
+            --text-color: #E0E1DD;
+            --highlight-color: #FF4E00;
+            --card-bg: #2c3e50;
+            --font-primary: 'Orbitron', sans-serif;
+            --font-secondary: 'Roboto', sans-serif;
+            --accent-color-rgb: 0, 166, 251;
+            --highlight-color-rgb: 255, 78, 0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-secondary); background-color: var(--primary-color); color: var(--text-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 20px 0; }
+        main { flex-grow: 1; }
+        h1, h2, h3 { font-family: var(--font-primary); color: var(--accent-color); margin-bottom: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        h1 { font-size: 2.8em; } h2 { font-size: 2.2em; } h3 { font-size: 1.6em; color: var(--text-color); }
+        p { margin-bottom: 15px; }
+        a { color: var(--accent-color); text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: var(--highlight-color); }
+        header { background-color: var(--secondary-color); padding: 15px 0; border-bottom: 3px solid var(--accent-color); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        header .container { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .logo { font-family: var(--font-primary); font-size: 2em; font-weight: 700; color: var(--text-color); }
+        .logo .highlight { color: var(--highlight-color); }
+        nav ul { list-style: none; display: flex; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { font-weight: 700; padding: 5px 10px; border-radius: 5px; }
+        nav ul li a.active, nav ul li a:hover { background-color: var(--accent-color); color: var(--primary-color); text-shadow: none; }
+        .cta-button { display: inline-block; background-color: var(--accent-color); color: var(--primary-color); padding: 12px 25px; font-family: var(--font-primary); font-weight: 700; text-transform: uppercase; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease, transform 0.2s ease; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .cta-button:hover { background-color: var(--highlight-color); color: #fff; transform: translateY(-2px); }
+        
+        /* Booking Page Specifics */
+        #selected-car-info, #dealer-search, #booking-form-section {
+            background-color: var(--secondary-color);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+        .car-details-booking { display: flex; align-items: center; gap: 20px; }
+        .car-details-booking img { border-radius: 5px; border: 2px solid var(--accent-color); max-width: 300px; height: auto; }
+        #map-placeholder { height: 300px; background-color: var(--primary-color); border: 1px solid var(--accent-color); display: flex; align-items: center; justify-content: center; margin: 20px 0; border-radius: 5px; color: var(--text-color); }
+        #dealers-list .dealer-item { background-color: var(--card-bg); padding: 15px; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--accent-color); }
+        .dealer-item p { margin-bottom: 5px; }
+
+        /* Forms */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 700; color: var(--accent-color); }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group input[type="date"],
+        .form-group select { width: 100%; padding: 12px; background-color: var(--primary-color); border: 1px solid var(--accent-color); color: var(--text-color); border-radius: 5px; font-family: var(--font-secondary); font-size: 1em; }
+        .form-group input[type="text"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group input[type="tel"]:focus,
+        .form-group input[type="date"]:focus,
+        .form-group select:focus { outline: none; border-color: var(--highlight-color); box-shadow: 0 0 5px rgba(var(--highlight-color-rgb), 0.5); }
+        .form-group input[readonly] { background-color: var(--secondary-color); cursor: not-allowed; }
+        
+        footer { background-color: var(--secondary-color); color: #aaa; text-align: center; padding: 20px 0; border-top: 3px solid var(--accent-color); margin-top: auto; }
+        footer p { margin-bottom: 5px; font-size: 0.9em; }
+
+        @media (max-width: 768px) {
+            header .container { flex-direction: column; align-items: center; }
+            nav ul { margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+            nav ul li { margin: 5px 10px; }
+            .car-details-booking { flex-direction: column; align-items: flex-start; }
+            .dealer-item { flex-direction: column; align-items: flex-start; }
+            .dealer-item button { margin-top: 10px; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Drive<span class="highlight">X</span>perience</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#modelli">Modelli</a></li>
+                    <li><a href="booking.html" class="active">Prenota</a></li>
+                    <li><a href="index.html#contatti">Contatti</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="selected-car-info">
+            <h2>Stai per prenotare un test drive per:</h2>
+            <div class="car-details-booking">
+                <img id="booking-car-image" src="https://via.placeholder.com/300x180/333/fff?text=Auto+Scelta" alt="Auto Selezionata">
+                <h3 id="booking-car-name">Nome Auto Selezionata</h3>
+            </div>
+        </section>
+
+        <section id="dealer-search">
+            <h2>Trova il Concessionario più Vicino</h2>
+            <div class="form-group">
+                <label for="location-input">Inserisci la tua Città o CAP:</label>
+                <input type="text" id="location-input" placeholder="Es. Roma o 00100">
+                <button id="search-dealers-btn" class="cta-button">Cerca Concessionari</button>
+            </div>
+            <div id="map-placeholder">
+                <p>La mappa dei concessionari apparirà qui.</p>
+            </div>
+            <div id="dealers-list">
+                <!-- I concessionari trovati verranno elencati qui -->
+            </div>
+        </section>
+
+        <section id="booking-form-section" style="display:none;">
+            <h2>Completa la Prenotazione</h2>
+            <form id="test-drive-form">
+                <input type="hidden" id="selected-car-id-form" name="carId">
+                <input type="hidden" id="selected-dealer-id-form" name="dealerId">
+                
+                <div class="form-group">
+                    <label for="dealer-name">Presso:</label>
+                    <input type="text" id="dealer-name-display" name="dealerNameDisplay" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="name">Nome Completo:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefono:</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">Data Desiderata:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">Orario Preferito:</label>
+                    <select id="time" name="time" required>
+                        <option value="">Seleziona orario</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                    </select>
+                </div>
+                <button type="submit" class="cta-button">Conferma Prenotazione</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 DriveXperience. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            function getTodaysDate() {
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                let mm = today.getMonth() + 1; // Months start at 0!
+                let dd = today.getDate();
+                if (dd < 10) dd = '0' + dd;
+                if (mm < 10) mm = '0' + mm;
+                return `${yyyy}-${mm}-${dd}`;
+            }
+
+            const selectedCarData = JSON.parse(localStorage.getItem('selectedCar'));
+            const bookingCarImage = document.getElementById('booking-car-image');
+            const bookingCarName = document.getElementById('booking-car-name');
+            const searchDealersBtn = document.getElementById('search-dealers-btn');
+            const dealersListDiv = document.getElementById('dealers-list');
+            const bookingFormSection = document.getElementById('booking-form-section');
+            const testDriveForm = document.getElementById('test-drive-form');
+            const dateInput = document.getElementById('date');
+
+            if (dateInput) {
+                dateInput.setAttribute('min', getTodaysDate());
+            }
+            
+            if (!selectedCarData) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            if (bookingCarImage) bookingCarImage.src = selectedCarData.image;
+            if (bookingCarName) bookingCarName.textContent = selectedCarData.name;
+            if (document.getElementById('selected-car-id-form')) {
+                document.getElementById('selected-car-id-form').value = selectedCarData.id;
+            }
+
+            const mockDealers = [
+                { id: 'dealer1', name: 'Concessionario Auto Elite', address: 'Via Roma 1, Milano', city: 'Milano' },
+                { id: 'dealer2', name: 'MotorTech Center', address: 'Corso Italia 20, Roma', city: 'Roma' },
+                { id: 'dealer3', name: 'FutureDrive Showroom', address: 'Viale Europa 55, Torino', city: 'Torino' },
+                { id: 'dealer4', name: 'Speedster Garage', address: 'Via Garibaldi 10, Milano', city: 'Milano' }
+            ];
+
+            if (searchDealersBtn) {
+                searchDealersBtn.addEventListener('click', () => {
+                    const locationInput = document.getElementById('location-input').value.toLowerCase();
+                    dealersListDiv.innerHTML = '<h3>Concessionari Trovati:</h3>';
+                    
+                    const mapPlaceholder = document.getElementById('map-placeholder');
+                    mapPlaceholder.innerHTML = `<p>Simulazione mappa per: ${locationInput || 'tutta Italia'}. In un'app reale, qui ci sarebbe una mappa interattiva.</p>`;
+                    mapPlaceholder.style.alignItems = 'flex-start';
+
+                    let foundDealers = false;
+                    mockDealers.forEach(dealer => {
+                        if (!locationInput || dealer.city.toLowerCase().includes(locationInput) || dealer.address.toLowerCase().includes(locationInput)) {
+                            const dealerDiv = document.createElement('div');
+                            dealerDiv.classList.add('dealer-item');
+                            dealerDiv.innerHTML = `
+                                <div>
+                                    <h4>${dealer.name}</h4>
+                                    <p>${dealer.address}</p>
+                                </div>
+                                <button class="cta-button book-here-btn" data-dealer-id="${dealer.id}" data-dealer-name="${dealer.name}" data-dealer-address="${dealer.address}">Prenota Qui</button>
+                            `;
+                            dealersListDiv.appendChild(dealerDiv);
+                            foundDealers = true;
+                        }
+                    });
+
+                    if(!foundDealers) {
+                        dealersListDiv.innerHTML += '<p>Nessun concessionario trovato per la tua ricerca.</p>';
+                    }
+
+                    document.querySelectorAll('.book-here-btn').forEach(button => {
+                        button.addEventListener('click', (e) => {
+                            const dealerId = e.target.dataset.dealerId;
+                            const dealerName = e.target.dataset.dealerName;
+                            document.getElementById('selected-dealer-id-form').value = dealerId;
+                            document.getElementById('dealer-name-display').value = dealerName;
+                            localStorage.setItem('selectedDealerAddress', e.target.dataset.dealerAddress);
+                            bookingFormSection.style.display = 'block';
+                            bookingFormSection.scrollIntoView({ behavior: 'smooth' });
+                        });
+                    });
+                });
+            }
+
+            if (testDriveForm) {
+                testDriveForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(testDriveForm);
+                    const bookingDetails = {
+                        carId: selectedCarData.id,
+                        carName: selectedCarData.name,
+                        dealerId: formData.get('dealerId'),
+                        dealerName: formData.get('dealerNameDisplay'),
+                        dealerAddress: localStorage.getItem('selectedDealerAddress'),
+                        userName: formData.get('name'),
+                        userEmail: formData.get('email'),
+                        userPhone: formData.get('phone'),
+                        date: formData.get('date'),
+                        time: formData.get('time')
+                    };
+                    localStorage.setItem('bookingConfirmation', JSON.stringify(bookingDetails));
+                    window.location.href = 'confirmation.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
